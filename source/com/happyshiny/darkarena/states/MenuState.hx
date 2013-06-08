@@ -1,9 +1,11 @@
 package com.happyshiny.darkarena.states;
 
 import nme.Assets;
+import nme.display.BitmapData;
 import nme.geom.Rectangle;
 import nme.net.SharedObject;
 import nme.Lib;
+import nme.net.URLRequest;
 import nme.ui.Mouse;
 import nme.events.KeyboardEvent;
 import org.flixel.FlxButton;
@@ -20,6 +22,9 @@ import org.flixel.tweens.FlxTween;
 
 class MenuState extends FlxState
 {
+    private var flagrantdisregard : FlxText;
+    private var bacongamejam : FlxText;
+
     public override function create():Void
     {
         // Keyboard events
@@ -54,19 +59,19 @@ class MenuState extends FlxState
         t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
         add(t);
 
-        var t = new FlxText(0, grid * 4, FlxG.width, "John Watson — flagrantdisregard.com");
-        t.setFormat(G.FONT, 25, 0xff669900, "center", 0x000000, true);
-        add(t);
+        flagrantdisregard = new FlxText(0, grid * 4, FlxG.width, "John Watson - flagrantdisregard.com");
+        flagrantdisregard.setFormat(G.FONT, 25, 0xff669900, "center", 0x000000, true);
+        add(flagrantdisregard);
 
-        var t = new FlxText(0, grid * 5, FlxG.width, "Created for BaconGameJam05 — bacongamejam.org");
-        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
-        add(t);
+        bacongamejam = new FlxText(0, grid * 5, FlxG.width, "Created for BaconGameJam05 - bacongamejam.org");
+        bacongamejam.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(bacongamejam);
 
         var t = new FlxText(0, grid * 6, FlxG.width, "Theme: \"Lights Out\"");
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
-        var t = new FlxText(0, grid * 9, FlxG.width, "— WASD to move, mouse to aim/shoot, survive as long as possible —");
+        var t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move, mouse to aim/shoot, survive as long as possible -");
         t.setFormat(G.FONT, 25, 0xffccff00, "center", 0x000000, true);
         add(t);
 
@@ -97,6 +102,17 @@ class MenuState extends FlxState
 
         if (FlxG.mouse.justPressed())
         {
+            if (flagrantdisregard.overlapsPoint(FlxG.mouse.getScreenPosition()))
+            {
+                Lib.getURL(new URLRequest("http://flagrantdisregard.com"), "");
+                return;
+            }
+            if (bacongamejam.overlapsPoint(FlxG.mouse.getScreenPosition()))
+            {
+                Lib.getURL(new URLRequest("http://bacongamejam.org"), "");
+                return;
+            }
+
             FlxG.switchState(new GameState());
         }
     }   

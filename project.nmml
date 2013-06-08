@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <!-- Change PACKAGE to something meaningful -->
+    <meta title="Dark Arena" package="com.happyshiny.darkarena" version="1.0.0" company="Happy Shiny" />
+    <app main="com.happyshiny.darkarena.Main" file="Main" path="build" swf-version="11" />
+    
+    <window width="800" height="500" orientation="landscape" resizable="false" background="0x000000" />
+
+    <source path="source" />
+
+    <haxelib name="nme" />
+    <haxelib name="flixel" />
+    
+    <icon path="assets/images/icon.svg" />
+
+    <assets path="assets/data" />
+    <assets path="assets/images" />
+    <assets path="assets/fonts" />
+
+    <!-- See http://www.nme.io/developer/tutorials/playing-sound/ -->
+    <assets path="assets/sounds" if="flash">
+        <!-- mp3s -->
+        <!-- <sound path="explision.mp3" id="explosion" /> -->
+    </assets>
+
+    <assets path="assets/sounds" if="android">
+        <!-- oggs -->
+        <!-- <sound path="explision.ogg" id="explosion" /> -->
+    </assets>
+
+    <assets path="assets/music">
+        <!-- mp3s -->
+        <!-- <music path="intro.mp3" id="intro" /> -->
+    </assets>
+
+    <!--
+    Override AndroidManifest.xml
+    <template path="to/your/manifest.xml" rename="bin/AndroidManifest.xml" />
+    -->
+
+    <section if="release">
+        <set name="FLX_NO_DEBUG" />
+        <!--<certificate path="KEYSTORE"
+            alias="ALIAS"
+            password="PASSWORD"
+            if="android" />-->
+    </section>
+</project>

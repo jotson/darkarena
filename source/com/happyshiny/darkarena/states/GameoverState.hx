@@ -64,7 +64,7 @@ class GameoverState extends FlxState
         add(mask);
 
         var t = new FlxText(0, grid * 5, FlxG.width, "Game Over");
-        t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
+        t.setFormat(G.FONT, 60, 0xff990000, "center", 0x000000, true);
         add(t);
 
         // SoundManager.playMusic("music");

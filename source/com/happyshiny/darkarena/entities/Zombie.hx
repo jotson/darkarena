@@ -14,11 +14,6 @@ class Zombie extends org.flixel.FlxSprite
     {
         super(x,y);
 
-        makeGraphic(20, 20, 0xff339900);
-        centerOffsets();
-
-        health = 3;
-
         revive();
     }
 
@@ -49,6 +44,11 @@ class Zombie extends org.flixel.FlxSprite
     public override function revive()
     {
         super.revive();
+
+        // Create a random zombie type
+        makeGraphic(20, 20, 0xff339900);
+        health = 3;
+        centerOffsets();
 
         // Random starting position
         switch(Std.random(4))

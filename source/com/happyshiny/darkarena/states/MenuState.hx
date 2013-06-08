@@ -56,7 +56,7 @@ class MenuState extends FlxState
         var grid = FlxG.height/16;
 
         var t = new FlxText(0, grid * 2, FlxG.width, "Dark Arena");
-        t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
+        t.setFormat(G.FONT, 60, 0xff990000, "center", 0x000000, true);
         add(t);
 
         flagrantdisregard = new FlxText(0, grid * 4, FlxG.width, "John Watson - flagrantdisregard.com");
@@ -71,7 +71,7 @@ class MenuState extends FlxState
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
-        var t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move, mouse to aim/shoot, survive as long as possible -");
+        var t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move / Mouse to shoot -");
         t.setFormat(G.FONT, 25, 0xffccff00, "center", 0x000000, true);
         add(t);
 

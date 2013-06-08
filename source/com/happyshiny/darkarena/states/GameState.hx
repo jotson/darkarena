@@ -1,5 +1,7 @@
 package com.happyshiny.darkarena.states;
 
+import com.happyshiny.darkarena.entities.Bullet;
+import com.happyshiny.darkarena.entities.Player;
 import nme.Assets;
 import nme.geom.Rectangle;
 import nme.net.SharedObject;
@@ -8,6 +10,7 @@ import nme.ui.Mouse;
 import nme.events.KeyboardEvent;
 import org.flixel.FlxButton;
 import org.flixel.FlxG;
+import org.flixel.FlxGroup;
 import org.flixel.FlxPath;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
@@ -24,11 +27,27 @@ class GameState extends FlxState
         // Keyboard events
         Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
+        FlxG.camera.antialiasing = true;
+
         #if (web || desktop)
         FlxG.mouse.show();
         #end
 
-        add(new FlxText(50, 50, 250, "GameState", 16, true));
+        var t = new FlxText(0, 50, FlxG.width, "GameState");
+        t.setFormat(G.FONT, 30, 0xffffffff, "center");
+        add(t);
+
+        G.enemies = new FlxGroup();
+        G.bullets = new FlxGroup();
+        G.particles = new FlxGroup();
+
+        add(G.enemies);
+        add(G.bullets);
+        add(G.particles);
+
+        // Add player last
+        G.player = new Player(FlxG.width/2, FlxG.height/2);
+        add(G.player);
 
         // SoundManager.playMusic("music");
     }
@@ -58,5 +77,22 @@ class GameState extends FlxState
     public override function update():Void
     {
         super.update();
+
+        G.player.acceleration.y = 0;
+        G.player.acceleration.x = 0;
+        if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
+        if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
+        if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
+        if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
+
+        if (FlxG.mouse.justPressed())
+        {
+            var p = FlxG.mouse.getScreenPosition();
+            var bullet = cast(G.bullets.recycle(Bullet), Bullet);
+            bullet.revive();
+            bullet.x = G.player.x + G.player.width/2;
+            bullet.y = G.player.y + G.player.height/2;
+            bullet.fireAt(p);
+        }
     }   
 }

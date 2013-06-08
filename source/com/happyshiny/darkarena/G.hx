@@ -22,6 +22,15 @@ class G
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
+    public static var gunTypePistol = { strength : 1, cooldown : 0.5, burst: 1, clip: 17 };
+    public static var gunTypeShotgun = { strength : 3, cooldown : 1, burst: 1, clip: 2 };
+    public static var gunTypeMGBurst = { strength : 1, cooldown : 1, burst: 3, clip: 30 };
+    public static var gunTypeMGAuto = { strength : 1, cooldown : 1, burst: 30, clip: 30 };
+    public static var gunTypeShotgunAuto = { strength : 3, cooldown : 1, burst: 3, clip: 9 };
+    public static var gun = gunTypePistol;
+    public static var gunTimer : Float = 0;
+    public static var gunCooldown : Float = 0;
+    public static var gunBurst : Int = 0;
 
     public static function reset()
     {
@@ -31,6 +40,8 @@ class G
     public static function update()
     {
         zombieTimer -= FlxG.elapsed;
+        gunCooldown -= FlxG.elapsed;
+        gunTimer -= FlxG.elapsed;
 
         if (zombieTimer <= 0)
         {
@@ -52,19 +63,31 @@ class G
         G.player.acceleration.x = 0;
 
         if (G.player.flickering) return;
-        
+
         if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
         if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
         if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
         if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
 
-        if (FlxG.mouse.justPressed())
+        if (FlxG.mouse.pressed() && gunCooldown <= 0 && gunTimer <= 0)
         {
+            if (gunTimer <= -0.2) gunBurst = 0;
+
+            gunTimer = 0.1;
+
+            gunBurst += 1;
+            if (gunBurst >= gun.burst)
+            {
+                gunCooldown = gun.cooldown;
+                gunBurst = 0;
+            }
+
             FlxG.camera.shake(0.005, 0.08);
 
             var p = FlxG.mouse.getScreenPosition();
             var bullet = cast(G.bullets.recycle(Bullet), Bullet);
             bullet.revive();
+            bullet.strength = gun.strength;
             bullet.x = G.player.x + G.player.width/2;
             bullet.y = G.player.y + G.player.height/2;
             bullet.fireAt(p);

@@ -50,6 +50,9 @@ class G
     {
         G.player.acceleration.y = 0;
         G.player.acceleration.x = 0;
+
+        if (G.player.flickering) return;
+        
         if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
         if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
         if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
@@ -70,8 +73,24 @@ class G
 
     public static function collide()
     {
-        FlxG.overlap(player, zombies, function(player, zombie) { player.hurt(1); zombie.kill(); });
-        FlxG.overlap(bullets, zombies, function(bullet, zombie) { bullet.kill(); zombie.kill(); });
+        FlxG.overlap(player, zombies,
+            function(player, zombie)
+            {
+                var zombie : Zombie = cast(zombie, Zombie);
+                G.player.hit(zombie.strength, zombie.getMidpoint());
+                zombie.hit(0, player.getMidpoint());
+            }
+        );
+
+        FlxG.overlap(bullets, zombies,
+            function(bullet, zombie)
+            {
+                var bullet : Bullet = cast(bullet, Bullet);
+                var zombie : Zombie = cast(zombie, Zombie);
+                bullet.kill();
+                zombie.hit(bullet.strength, bullet.getMidpoint());
+            }
+        );
     }
 
     public static function gameOver()

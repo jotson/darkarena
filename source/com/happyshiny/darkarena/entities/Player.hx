@@ -1,7 +1,9 @@
 package com.happyshiny.darkarena.entities;
 
 import org.flixel.FlxG;
+import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
+import org.flixel.FlxU;
 
 class Player extends FlxSprite
 {
@@ -70,14 +72,21 @@ class Player extends FlxSprite
         }
     }
 
-    public override function hurt(Damage : Float)
+    public function hit(Damage : Float, p : FlxPoint)
     {
         FlxG.camera.shake(0.01, 0.2);
 
-        health -= Damage;
-        if (health <= 0)
-        {
-            G.gameOver();
-        }
+        flicker(1);
+
+        // Push back
+        var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), p) - 90);
+        x += -10 * Math.cos(angle);
+        y += -10 * Math.sin(angle);
+        velocity.x = 0;
+        velocity.y = 0;
+
+        super.hurt(Damage);
+
+        if (!alive) G.gameOver();
     }
 }

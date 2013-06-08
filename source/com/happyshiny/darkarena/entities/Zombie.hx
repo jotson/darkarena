@@ -1,11 +1,14 @@
 package com.happyshiny.darkarena.entities;
 
 import org.flixel.FlxG;
+import org.flixel.FlxPoint;
 import org.flixel.FlxU;
 
 class Zombie extends org.flixel.FlxSprite
 {
     public static var SPEED = 25;
+
+    public var strength = 1;
 
     public function new(x, y)
     {
@@ -14,6 +17,8 @@ class Zombie extends org.flixel.FlxSprite
         makeGraphic(20, 20, 0xff339900);
         centerOffsets();
 
+        health = 3;
+
         revive();
     }
 
@@ -21,11 +26,22 @@ class Zombie extends org.flixel.FlxSprite
     {
         super.update();
 
+        if (flickering) return;
+
         // Find player
         var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), G.player.getMidpoint()) - 90);
 
         velocity.x = SPEED * Math.cos(angle);
         velocity.y = SPEED * Math.sin(angle);        
+    }
+
+    public function hit(Damage : Float, p : FlxPoint)
+    {
+        flicker(1);
+        velocity.x = 0;
+        velocity.y = 0;
+
+        super.hurt(Damage);
     }
 
     public override function revive()

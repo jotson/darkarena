@@ -18,6 +18,7 @@ class Powerup extends FlxSprite
     {
         timer -= FlxG.elapsed;
 
+        if (timer <= 1.0 && !flickering) flicker(1.0);
         if (timer <= 0) kill();
     }
 

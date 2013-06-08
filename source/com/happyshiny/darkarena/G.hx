@@ -10,7 +10,10 @@ import com.happyshiny.darkarena.states.GameoverState;
 import com.happyshiny.util.SoundManager;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
+import org.flixel.FlxSprite;
+import org.flixel.FlxText;
 import org.flixel.FlxU;
+import org.flixel.plugin.photonstorm.FlxBar;
 
 class G
 {
@@ -24,29 +27,91 @@ class G
     public static var bullets : FlxGroup;
     public static var particles : FlxGroup;
 
+    public static var hud : FlxGroup;
+    public static var hudWeapon : FlxSprite;
+    public static var hudTimer : FlxText;
+    public static var hudAmmo : FlxBar;
+    public static var hudKills : FlxText;
+
+    public static var score = { kills: 0, time: 0.0, shotsHit: 0, shotsFired: 0 };
+
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
     public static var weaponTypePistol = { strength: 1, cooldown: 0.5, burst: 1, clip: 30 };
-    public static var weaponTypeShotgun = { strength: 3, cooldown: 1, burst: 2, clip: 10 };
+    public static var weaponTypeShotgun = { strength: 3, cooldown: 1, burst: 1, clip: 10 };
     public static var weaponTypeMGBurst = { strength: 1, cooldown: 1, burst: 3, clip: 30 };
     public static var weaponTypeMGAuto = { strength: 1, cooldown: 1, burst: 30, clip: 30 };
     public static var weaponTypeShotgunAuto = { strength: 3, cooldown: 1, burst: 3, clip: 9 };
-    public static var weapon = weaponTypePistol;
-    public static var weaponTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: weapon.clip };
 
-    public static var powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, weapons: 0, maxLanterns: 2, maxAmmo: 2, maxWeapons: 2, cooldown: 15 };
+    public static var weapon : Dynamic;
+    public static var weaponTimers : Dynamic;
+    public static var powerupTimers : Dynamic;
 
     public static function reset()
     {
+        score.time = 0;
+        score.kills = 0;
+        score.shotsHit = 0;
+        score.shotsFired = 0;
+        zombieTimer = 0;
         zombieSpawnTime = 5;
+
+        weapon = weaponTypePistol;
+        weaponTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: weapon.clip };
+        powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, weapons: 0, maxLanterns: 2, maxAmmo: 2, maxWeapons: 2, cooldown: 15 };
+
+        G.powerups = new FlxGroup();
+        G.zombies = new FlxGroup();
+        G.bodies = new FlxGroup();
+        G.bullets = new FlxGroup();
+        G.particles = new FlxGroup();
+        G.hud = new FlxGroup();
+
+        FlxG.state.add(G.bodies);
+        FlxG.state.add(G.powerups);
+        FlxG.state.add(G.zombies);
+        FlxG.state.add(G.bullets);
+        FlxG.state.add(G.particles);
+
+        // Add player
+        G.player = new Player(FlxG.width/2, FlxG.height/2);
+        FlxG.state.add(G.player);
+
+        // Add HUD
+        hudWeapon = new FlxSprite();
+        hudAmmo = new FlxBar(10, 30, FlxBar.FILL_LEFT_TO_RIGHT, 100, 30, weaponTimers, "ammo", 0, weapon.clip, true);
+        hudAmmo.createGradientBar([0xff000000,0xff000000], [0xffff0000,0xffff0000], 1, 180, true);
+
+        // Timer
+        var t = new FlxText(FlxG.width - 110, 10, 100, "Time");
+        t.setFormat("assets/fonts/ShareTech-Regular.ttf", 20, 0xffffffff, "right", 0x000000, true);
+        hud.add(t);
+        hudTimer = new FlxText(FlxG.width - 110, 30, 100, "");
+        hudTimer.setFormat("assets/fonts/ShareTech-Regular.ttf", 30, 0xffff0000, "right", 0x000000, true);
+
+        // Kills
+        var t = new FlxText(hudTimer.x - hudTimer.width - 110, 10, 100, "Kills");
+        t.setFormat("assets/fonts/ShareTech-Regular.ttf", 20, 0xffffffff, "right", 0x000000, true);
+        hud.add(t);
+        hudKills = new FlxText(hudTimer.x - hudTimer.width - 110, 30, 100, "");
+        hudKills.setFormat("assets/fonts/ShareTech-Regular.ttf", 30, 0xffff0000, "right", 0x000000, true);
+
+        hud.add(hudWeapon);
+        hud.add(hudAmmo);
+        hud.add(hudTimer);
+        hud.add(hudKills);
+        FlxG.state.add(G.hud);
     }
 
     public static function update()
     {
+        score.time += FlxG.elapsed;
         zombieTimer -= FlxG.elapsed;
         weaponTimers.cooldown -= FlxG.elapsed;
         weaponTimers.nextShot -= FlxG.elapsed;
+
+        updateHud();
 
         if (zombieTimer <= 0)
         {
@@ -85,6 +150,17 @@ class G
         }
     }
 
+    public static function addKill()
+    {
+        score.kills++;
+    }
+
+    public static function updateHud()
+    {
+        G.hudKills.text = Std.string(score.kills);
+        G.hudTimer.text = Std.string(FlxU.formatMoney(score.time, true));
+    }
+
     public static function getInput()
     {
         G.player.acceleration.y = 0;
@@ -120,6 +196,7 @@ class G
             bullet.y = G.player.y + G.player.height/2;
             bullet.fireAt(p);
 
+            score.shotsFired++;
             weaponTimers.ammo -= 1;
         }
     }
@@ -149,6 +226,7 @@ class G
                         G.weaponTimers.ammo = w.weapon.clip;
                         G.weaponTimers.cooldown = w.weapon.cooldown;
                         G.weapon = w.weapon;
+                        hudAmmo.setRange(0, w.weapon.clip);
                         powerup.kill();
                 }
             }
@@ -161,6 +239,7 @@ class G
                 var zombie : Zombie = cast(zombie, Zombie);
                 bullet.kill();
                 zombie.hit(bullet.strength, bullet.getMidpoint());
+                G.score.shotsHit++;
             }
         );
     }

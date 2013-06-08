@@ -42,6 +42,8 @@ class Zombie extends org.flixel.FlxSprite
         velocity.y = 0;
 
         super.hurt(Damage);
+
+        if (!alive) G.addKill();
     }
 
     public override function revive()

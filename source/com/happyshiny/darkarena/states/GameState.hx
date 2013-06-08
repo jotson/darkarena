@@ -30,33 +30,13 @@ class GameState extends FlxState
 
         FlxG.camera.antialiasing = true;
 
-        G.reset();
-
         #if (web || desktop)
         FlxG.mouse.show();
         #end
 
         add(new FlxSprite(0, 0, "assets/images/floor.png"));
-
-        // var t = new FlxText(0, 50, FlxG.width, "GameState");
-        // t.setFormat(G.FONT, 30, 0xffffffff, "center");
-        // add(t);
-
-        G.powerups = new FlxGroup();
-        G.zombies = new FlxGroup();
-        G.bodies = new FlxGroup();
-        G.bullets = new FlxGroup();
-        G.particles = new FlxGroup();
-
-        add(G.powerups);
-        add(G.zombies);
-        add(G.bodies);
-        add(G.bullets);
-        add(G.particles);
-
-        // Add player
-        G.player = new Player(FlxG.width/2, FlxG.height/2);
-        add(G.player);
+        
+        G.reset();
 
         // SoundManager.playMusic("music");
     }

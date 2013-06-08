@@ -3,6 +3,7 @@ package com.happyshiny.darkarena;
 import com.happyshiny.darkarena.entities.Lantern;
 import com.happyshiny.darkarena.entities.Player;
 import com.happyshiny.darkarena.entities.Powerup;
+import com.happyshiny.darkarena.entities.Weapon;
 import com.happyshiny.darkarena.entities.Zombie;
 import com.happyshiny.darkarena.entities.Bullet;
 import com.happyshiny.darkarena.states.GameoverState;
@@ -26,16 +27,15 @@ class G
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
-    public static var gunTypePistol = { strength: 1, cooldown: 0.5, burst: 1, clip: 30 };
-    public static var gunTypeShotgun = { strength: 3, cooldown: 1, burst: 2, clip: 10 };
-    public static var gunTypeMGBurst = { strength: 1, cooldown: 1, burst: 3, clip: 30 };
-    public static var gunTypeMGAuto = { strength: 1, cooldown: 1, burst: 30, clip: 30 };
-    public static var gunTypeShotgunAuto = { strength: 3, cooldown: 1, burst: 3, clip: 9 };
-    public static var gunTypes = [gunTypePistol, gunTypeShotgun, gunTypeMGBurst, gunTypeMGAuto, gunTypeShotgunAuto];
-    public static var gun = gunTypePistol;
-    public static var gunTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: gun.clip };
+    public static var weaponTypePistol = { strength: 1, cooldown: 0.5, burst: 1, clip: 30 };
+    public static var weaponTypeShotgun = { strength: 3, cooldown: 1, burst: 2, clip: 10 };
+    public static var weaponTypeMGBurst = { strength: 1, cooldown: 1, burst: 3, clip: 30 };
+    public static var weaponTypeMGAuto = { strength: 1, cooldown: 1, burst: 30, clip: 30 };
+    public static var weaponTypeShotgunAuto = { strength: 3, cooldown: 1, burst: 3, clip: 9 };
+    public static var weapon = weaponTypePistol;
+    public static var weaponTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: weapon.clip };
 
-    public static var powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, guns: 0, maxLanterns: 2, maxAmmo: 2, maxGuns: 2, cooldown: 15 };
+    public static var powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, weapons: 0, maxLanterns: 2, maxAmmo: 2, maxWeapons: 2, cooldown: 15 };
 
     public static function reset()
     {
@@ -45,8 +45,8 @@ class G
     public static function update()
     {
         zombieTimer -= FlxG.elapsed;
-        gunTimers.cooldown -= FlxG.elapsed;
-        gunTimers.nextShot -= FlxG.elapsed;
+        weaponTimers.cooldown -= FlxG.elapsed;
+        weaponTimers.nextShot -= FlxG.elapsed;
 
         if (zombieTimer <= 0)
         {
@@ -78,10 +78,10 @@ class G
             o.revive();
         }
 
-        if (powerupTimers.guns < powerupTimers.maxGuns)
+        if (powerupTimers.weapons < powerupTimers.maxWeapons)
         {
-            // var o = cast(powerups.recycle(Gun), Powerup);
-            // o.revive();
+            var o = cast(powerups.recycle(Weapon), Powerup);
+            o.revive();
         }
     }
 
@@ -97,17 +97,17 @@ class G
         if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
         if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
 
-        if (FlxG.mouse.pressed() && gunTimers.cooldown <= 0 && gunTimers.nextShot <= 0 && gunTimers.ammo > 0)
+        if (FlxG.mouse.pressed() && weaponTimers.cooldown <= 0 && weaponTimers.nextShot <= 0 && weaponTimers.ammo > 0)
         {
-            if (gunTimers.nextShot <= -0.2) gunTimers.burst = 0;
+            if (weaponTimers.nextShot <= -0.2) weaponTimers.burst = 0;
 
-            gunTimers.nextShot = 0.1;
+            weaponTimers.nextShot = 0.1;
 
-            gunTimers.burst += 1;
-            if (gunTimers.burst >= gun.burst)
+            weaponTimers.burst += 1;
+            if (weaponTimers.burst >= weapon.burst)
             {
-                gunTimers.cooldown = gun.cooldown;
-                gunTimers.burst = 0;
+                weaponTimers.cooldown = weapon.cooldown;
+                weaponTimers.burst = 0;
             }
 
             FlxG.camera.shake(0.005, 0.08);
@@ -115,12 +115,12 @@ class G
             var p = FlxG.mouse.getScreenPosition();
             var bullet = cast(G.bullets.recycle(Bullet), Bullet);
             bullet.revive();
-            bullet.strength = gun.strength;
+            bullet.strength = weapon.strength;
             bullet.x = G.player.x + G.player.width/2;
             bullet.y = G.player.y + G.player.height/2;
             bullet.fireAt(p);
 
-            gunTimers.ammo -= 1;
+            weaponTimers.ammo -= 1;
         }
     }
 
@@ -144,8 +144,11 @@ class G
                         G.player.getLantern();
                         powerup.kill();
 
-                    case "Gun":
-                        // Switch gun, update ammo, etc
+                    case "Weapon":
+                        var w = cast(powerup, Weapon);
+                        G.weaponTimers.ammo = w.weapon.clip;
+                        G.weaponTimers.cooldown = w.weapon.cooldown;
+                        G.weapon = w.weapon;
                         powerup.kill();
                 }
             }

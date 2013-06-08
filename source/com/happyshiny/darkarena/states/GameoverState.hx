@@ -34,7 +34,7 @@ class GameoverState extends FlxState
                     Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
                     var t = new FlxText(0, grid * 10, FlxG.width, "Press any key to continue");
-                    t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x000000, true);
+                    t.setFormat(G.FONT, 30, 0xff990000, "center", 0x000000, true);
                     FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
                     add(t);
                 }
@@ -63,8 +63,20 @@ class GameoverState extends FlxState
         mask.play('default');
         add(mask);
 
-        var t = new FlxText(0, grid * 5, FlxG.width, "Game Over");
+        var t = new FlxText(0, grid * 3, FlxG.width, "Game Over");
         t.setFormat(G.FONT, 60, 0xff990000, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 5, FlxG.width, "Time: " + FlxU.formatMoney(G.score.time));
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 6, FlxG.width, "Kills: " + G.score.kills);
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 7, FlxG.width, "Accuracy: " + Std.string(Math.round(G.score.shotsHit/G.score.shotsFired * 1000)/10) + "%");
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
         // SoundManager.playMusic("music");

@@ -8,7 +8,7 @@ import org.flixel.FlxU;
 class Bullet extends FlxSprite
 {
     public static var SPEED = 600;
-    public var strength = 1;
+    public var strength : Float = 1.0;
 
     public function new(x, y)
     {

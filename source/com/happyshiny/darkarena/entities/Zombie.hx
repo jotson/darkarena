@@ -47,7 +47,7 @@ class Zombie extends org.flixel.FlxSprite
 
         // Create a random zombie type
         makeGraphic(20, 20, 0xff339900);
-        health = 3;
+        health = 3.0;
         centerOffsets();
 
         // Random starting position

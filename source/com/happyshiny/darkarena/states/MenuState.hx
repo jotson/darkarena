@@ -60,7 +60,7 @@ class MenuState extends FlxState
         add(t);
 
         flagrantdisregard = new FlxText(0, grid * 4, FlxG.width, "John Watson - flagrantdisregard.com");
-        flagrantdisregard.setFormat(G.FONT, 25, 0xff669900, "center", 0x000000, true);
+        flagrantdisregard.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(flagrantdisregard);
 
         bacongamejam = new FlxText(0, grid * 5, FlxG.width, "Created for BaconGameJam05 - bacongamejam.org");
@@ -72,11 +72,11 @@ class MenuState extends FlxState
         add(t);
 
         var t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move / Mouse to shoot -");
-        t.setFormat(G.FONT, 25, 0xffccff00, "center", 0x000000, true);
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
         var t = new FlxText(0, grid * 13, FlxG.width, "Press any key to start");
-        t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x00000, true);
+        t.setFormat(G.FONT, 30, 0xff990000, "center", 0x00000, true);
         FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
         add(t);
 

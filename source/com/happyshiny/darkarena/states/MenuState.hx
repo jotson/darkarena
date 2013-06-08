@@ -48,17 +48,31 @@ class MenuState extends FlxState
         mask.play('default');
         add(mask);
 
-        var t = new FlxText(0, FlxG.height * 0.7, FlxG.width, "Press any key to start");
-        t.setFormat(G.FONT, 30, 0xffffffff, "center");
+        var grid = FlxG.height/16;
+
+        var t = new FlxText(0, grid * 2, FlxG.width, "Dark Arena");
+        t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 4, FlxG.width, "John Watson — flagrantdisregard.com");
+        t.setFormat(G.FONT, 25, 0xff669900, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 5, FlxG.width, "Created for BaconGameJam05 — bacongamejam.org");
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 6, FlxG.width, "Theme: \"Lights Out\"");
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 9, FlxG.width, "— WASD to move, mouse to aim/shoot, survive as long as possible —");
+        t.setFormat(G.FONT, 25, 0xffccff00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 13, FlxG.width, "Press any key to start");
+        t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x00000, true);
         FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
-        add(t);
-
-        var t = new FlxText(0, FlxG.height * 0.4, FlxG.width, "WASD to move, mouse to aim/shoot, survive as long as possible.");
-        t.setFormat(G.FONT, 25, 0xffffffff, "center");
-        add(t);
-
-        var t = new FlxText(0, FlxG.height * 0.2, FlxG.width, "Dark Arena");
-        t.setFormat(G.FONT, 60, 0xffffffff, "center");
         add(t);
 
         // SoundManager.playMusic("music");

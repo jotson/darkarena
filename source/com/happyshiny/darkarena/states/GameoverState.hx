@@ -49,13 +49,15 @@ class GameoverState extends FlxState
         mask.play('default');
         add(mask);
 
-        var t = new FlxText(0, FlxG.height * 0.7, FlxG.width, "Press any key to continue");
-        t.setFormat(G.FONT, 30, 0xffffffff, "center");
-        FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
+        var grid = FlxG.height/16;
+
+        var t = new FlxText(0, grid * 5, FlxG.width, "Game Over");
+        t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
         add(t);
 
-        var t = new FlxText(0, FlxG.height * 0.2, FlxG.width, "Game Over");
-        t.setFormat(G.FONT, 60, 0xffffffff, "center");
+        var t = new FlxText(0, grid * 10, FlxG.width, "Press any key to continue");
+        t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x000000, true);
+        FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
         add(t);
 
         // SoundManager.playMusic("music");

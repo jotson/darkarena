@@ -14,7 +14,8 @@ class G
 
     public static var player : Player;
 
-    public static var enemies : FlxGroup;
+    public static var zombies : FlxGroup;
+    public static var bodies : FlxGroup;
     public static var bullets : FlxGroup;
     public static var particles : FlxGroup;
 
@@ -37,7 +38,7 @@ class G
             zombieSpawnTime -= 0.1;
             if (zombieSpawnTime < 0.5) zombieSpawnTime = 0.5;
 
-            var z = cast(G.enemies.recycle(Zombie), Zombie);
+            var z = cast(G.zombies.recycle(Zombie), Zombie);
             z.revive();
         }
 
@@ -69,8 +70,8 @@ class G
 
     public static function collide()
     {
-        FlxG.overlap(player, enemies, function(player, enemy) { player.hurt(1); enemy.kill(); });
-        FlxG.overlap(bullets, enemies, function(bullet, enemy) { bullet.kill(); enemy.kill(); });
+        FlxG.overlap(player, zombies, function(player, zombie) { player.hurt(1); zombie.kill(); });
+        FlxG.overlap(bullets, zombies, function(bullet, zombie) { bullet.kill(); zombie.kill(); });
     }
 
     public static function gameOver()

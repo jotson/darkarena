@@ -72,6 +72,8 @@ class Player extends FlxSprite
 
     public override function hurt(Damage : Float)
     {
+        FlxG.camera.shake(0.01, 0.2);
+
         health -= Damage;
         if (health <= 0)
         {

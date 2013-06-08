@@ -33,6 +33,8 @@ class GameState extends FlxState
         FlxG.mouse.show();
         #end
 
+        add(new FlxSprite(0, 0, "assets/images/floor.png"));
+
         var t = new FlxText(0, 50, FlxG.width, "GameState");
         t.setFormat(G.FONT, 30, 0xffffffff, "center");
         add(t);
@@ -87,6 +89,8 @@ class GameState extends FlxState
 
         if (FlxG.mouse.justPressed())
         {
+            FlxG.camera.shake(0.005, 0.08);
+
             var p = FlxG.mouse.getScreenPosition();
             var bullet = cast(G.bullets.recycle(Bullet), Bullet);
             bullet.revive();

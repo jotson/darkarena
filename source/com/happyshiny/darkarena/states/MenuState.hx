@@ -31,6 +31,23 @@ class MenuState extends FlxState
         FlxG.mouse.show();
         #end
 
+        add(new FlxSprite(0, 0, "assets/images/floor.png"));
+        var mask = new FlxSprite(FlxG.width/2, FlxG.height/2, "assets/images/darkness-mask.png");
+        mask.scale.x = 20;
+        mask.scale.y = 20;
+        mask.x -= mask.width/2;
+        mask.y -= mask.height/2;
+        mask.addAnimation('default', [0], 10);
+        mask.addAnimationCallback(
+            function(name, frame, index)
+            {
+                mask.scale.x = Math.random()*4 + 20;
+                mask.scale.y = mask.scale.x;
+            }
+        );
+        mask.play('default');
+        add(mask);
+
         // Start
         var t = new FlxText(0, FlxG.height * 0.7, FlxG.width, "Press any key to start");
         t.setFormat(G.FONT, 30, 0xffffffff, "center");

@@ -25,6 +25,15 @@ class Player extends FlxSprite
         darkness.centerOffsets();
         darkness.scale.x = 8;
         darkness.scale.y = 8;
+        darkness.addAnimation('default', [0], 10);
+        darkness.addAnimationCallback(
+            function(name, frame, index)
+            {
+                darkness.scale.x = Math.random()*3 + 8;
+                darkness.scale.y = darkness.scale.x;
+            }
+        );
+        darkness.play('default');
         FlxG.state.add(darkness);
     }
 

@@ -1,12 +1,15 @@
 package com.happyshiny.darkarena;
 
+import com.happyshiny.darkarena.entities.Lantern;
 import com.happyshiny.darkarena.entities.Player;
+import com.happyshiny.darkarena.entities.Powerup;
 import com.happyshiny.darkarena.entities.Zombie;
 import com.happyshiny.darkarena.entities.Bullet;
 import com.happyshiny.darkarena.states.GameoverState;
 import com.happyshiny.util.SoundManager;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
+import org.flixel.FlxU;
 
 class G
 {
@@ -14,6 +17,7 @@ class G
 
     public static var player : Player;
 
+    public static var powerups : FlxGroup;
     public static var zombies : FlxGroup;
     public static var bodies : FlxGroup;
     public static var bullets : FlxGroup;
@@ -22,15 +26,16 @@ class G
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
-    public static var gunTypePistol = { strength : 1, cooldown : 0.5, burst: 1, clip: 17 };
-    public static var gunTypeShotgun = { strength : 3, cooldown : 1, burst: 1, clip: 2 };
-    public static var gunTypeMGBurst = { strength : 1, cooldown : 1, burst: 3, clip: 30 };
-    public static var gunTypeMGAuto = { strength : 1, cooldown : 1, burst: 30, clip: 30 };
-    public static var gunTypeShotgunAuto = { strength : 3, cooldown : 1, burst: 3, clip: 9 };
+    public static var gunTypePistol = { strength: 1, cooldown: 0.5, burst: 1, clip: 30 };
+    public static var gunTypeShotgun = { strength: 3, cooldown: 1, burst: 2, clip: 10 };
+    public static var gunTypeMGBurst = { strength: 1, cooldown: 1, burst: 3, clip: 30 };
+    public static var gunTypeMGAuto = { strength: 1, cooldown: 1, burst: 30, clip: 30 };
+    public static var gunTypeShotgunAuto = { strength: 3, cooldown: 1, burst: 3, clip: 9 };
+    public static var gunTypes = [gunTypePistol, gunTypeShotgun, gunTypeMGBurst, gunTypeMGAuto, gunTypeShotgunAuto];
     public static var gun = gunTypePistol;
-    public static var gunTimer : Float = 0;
-    public static var gunCooldown : Float = 0;
-    public static var gunBurst : Int = 0;
+    public static var gunTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: gun.clip };
+
+    public static var powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, guns: 0, maxLanterns: 2, maxAmmo: 2, maxGuns: 2, cooldown: 15 };
 
     public static function reset()
     {
@@ -40,8 +45,8 @@ class G
     public static function update()
     {
         zombieTimer -= FlxG.elapsed;
-        gunCooldown -= FlxG.elapsed;
-        gunTimer -= FlxG.elapsed;
+        gunTimers.cooldown -= FlxG.elapsed;
+        gunTimers.nextShot -= FlxG.elapsed;
 
         if (zombieTimer <= 0)
         {
@@ -55,6 +60,29 @@ class G
 
         G.getInput();
         G.collide();
+
+        G.addPowerup();
+    }
+
+    public static function addPowerup()
+    {
+        powerupTimers.timer -= FlxG.elapsed;
+
+        if (powerupTimers.timer > 0) return;
+
+        powerupTimers.timer = powerupTimers.cooldown;
+
+        if (powerupTimers.lanterns < powerupTimers.maxLanterns)
+        {
+            var o = cast(powerups.recycle(Lantern), Powerup);
+            o.revive();
+        }
+
+        if (powerupTimers.guns < powerupTimers.maxGuns)
+        {
+            // var o = cast(powerups.recycle(Gun), Powerup);
+            // o.revive();
+        }
     }
 
     public static function getInput()
@@ -69,17 +97,17 @@ class G
         if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
         if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
 
-        if (FlxG.mouse.pressed() && gunCooldown <= 0 && gunTimer <= 0)
+        if (FlxG.mouse.pressed() && gunTimers.cooldown <= 0 && gunTimers.nextShot <= 0 && gunTimers.ammo > 0)
         {
-            if (gunTimer <= -0.2) gunBurst = 0;
+            if (gunTimers.nextShot <= -0.2) gunTimers.burst = 0;
 
-            gunTimer = 0.1;
+            gunTimers.nextShot = 0.1;
 
-            gunBurst += 1;
-            if (gunBurst >= gun.burst)
+            gunTimers.burst += 1;
+            if (gunTimers.burst >= gun.burst)
             {
-                gunCooldown = gun.cooldown;
-                gunBurst = 0;
+                gunTimers.cooldown = gun.cooldown;
+                gunTimers.burst = 0;
             }
 
             FlxG.camera.shake(0.005, 0.08);
@@ -91,6 +119,8 @@ class G
             bullet.x = G.player.x + G.player.width/2;
             bullet.y = G.player.y + G.player.height/2;
             bullet.fireAt(p);
+
+            gunTimers.ammo -= 1;
         }
     }
 
@@ -102,6 +132,22 @@ class G
                 var zombie : Zombie = cast(zombie, Zombie);
                 G.player.hit(zombie.strength, zombie.getMidpoint());
                 zombie.hit(0, player.getMidpoint());
+            }
+        );
+
+        FlxG.overlap(player, powerups,
+            function(player, powerup)
+            {
+                switch(FlxU.getClassName(powerup, true))
+                {
+                    case "Lantern":
+                        G.player.getLantern();
+                        powerup.kill();
+
+                    case "Gun":
+                        // Switch gun, update ammo, etc
+                        powerup.kill();
+                }
             }
         );
 

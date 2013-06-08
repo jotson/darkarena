@@ -42,11 +42,13 @@ class GameState extends FlxState
         // t.setFormat(G.FONT, 30, 0xffffffff, "center");
         // add(t);
 
+        G.powerups = new FlxGroup();
         G.zombies = new FlxGroup();
         G.bodies = new FlxGroup();
         G.bullets = new FlxGroup();
         G.particles = new FlxGroup();
 
+        add(G.powerups);
         add(G.zombies);
         add(G.bodies);
         add(G.bullets);

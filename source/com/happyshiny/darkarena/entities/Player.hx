@@ -11,6 +11,9 @@ class Player extends FlxSprite
     public static var DRAG = 300;
     public static var MAXHEALTH = 3;
 
+    public var lanternTimer : Float = 0;
+    public var lanternArea : Float;
+
     private var darkness : FlxSprite;
 
     public function new(x, y)
@@ -34,7 +37,7 @@ class Player extends FlxSprite
         darkness.addAnimationCallback(
             function(name, frame, index)
             {
-                darkness.scale.x = Math.random()*3 + 8;
+                darkness.scale.x = Math.random() * 3 + G.player.lanternArea;
                 darkness.scale.y = darkness.scale.x;
             }
         );
@@ -45,6 +48,12 @@ class Player extends FlxSprite
     public override function update()
     {
         super.update();
+
+        lanternTimer -= FlxG.elapsed;
+        if (lanternTimer <= 0)
+        {
+            lanternArea = 8;
+        }
 
         darkness.x = x - darkness.width/2 + width/2;
         darkness.y = y - darkness.height/2 + height/2;
@@ -70,6 +79,12 @@ class Player extends FlxSprite
             y = 0;
             velocity.y = -velocity.y;
         }
+    }
+
+    public function getLantern()
+    {
+        lanternTimer = 5;
+        lanternArea = 16;
     }
 
     public function hit(Damage : Float, p : FlxPoint)

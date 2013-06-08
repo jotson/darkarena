@@ -23,8 +23,22 @@ class GameoverState extends FlxState
 {
     public override function create():Void
     {
+        var grid = FlxG.height/16;
+
         // Keyboard events
-        Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+        FlxG.tween(this, {}, 3,
+        {
+            complete:
+                function()
+                {
+                    Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+
+                    var t = new FlxText(0, grid * 10, FlxG.width, "Press any key to continue");
+                    t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x000000, true);
+                    FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
+                    add(t);
+                }
+        });
 
         FlxG.camera.antialiasing = true;
 
@@ -49,15 +63,8 @@ class GameoverState extends FlxState
         mask.play('default');
         add(mask);
 
-        var grid = FlxG.height/16;
-
         var t = new FlxText(0, grid * 5, FlxG.width, "Game Over");
         t.setFormat(G.FONT, 60, 0xff336600, "center", 0x000000, true);
-        add(t);
-
-        var t = new FlxText(0, grid * 10, FlxG.width, "Press any key to continue");
-        t.setFormat(G.FONT, 30, 0xff99cc00, "center", 0x000000, true);
-        FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
         add(t);
 
         // SoundManager.playMusic("music");

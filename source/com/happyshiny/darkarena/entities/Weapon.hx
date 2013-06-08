@@ -23,21 +23,17 @@ class Weapon extends Powerup
         {
             case 0:
                 weapon = G.weaponTypePistol;
-                makeGraphic(5, 5, 0xffff0000);
             case 1:
                 weapon = G.weaponTypeShotgun;
-                makeGraphic(10, 10, 0xffff0000);
             case 2:
-                weapon = G.weaponTypeMGBurst;
-                makeGraphic(15, 15, 0xffff0000);
+                weapon = G.weaponTypeSemiauto;
             case 3:
-                weapon = G.weaponTypeMGAuto;
-                makeGraphic(20, 20, 0xffff0000);
+                weapon = G.weaponTypeMachinegun;
             case 4:
-                weapon = G.weaponTypeShotgunAuto;
-                makeGraphic(25, 25, 0xffff0000);
+                weapon = G.weaponTypeAutoShotgun;
         }
 
+        loadGraphic(weapon.graphic);
         centerOffsets();
     }
 }

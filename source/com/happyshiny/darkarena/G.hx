@@ -38,11 +38,11 @@ class G
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
-    public static var weaponTypePistol = { strength: 1, cooldown: 0.5, burst: 1, clip: 30 };
-    public static var weaponTypeShotgun = { strength: 3, cooldown: 1, burst: 1, clip: 10 };
-    public static var weaponTypeMGBurst = { strength: 1, cooldown: 1, burst: 3, clip: 30 };
-    public static var weaponTypeMGAuto = { strength: 1, cooldown: 1, burst: 30, clip: 30 };
-    public static var weaponTypeShotgunAuto = { strength: 3, cooldown: 1, burst: 3, clip: 9 };
+    public static var weaponTypePistol = { strength: 1.0, cooldown: 0.5, burst: 1, clip: 30, graphic: "assets/images/pistol.png" };
+    public static var weaponTypeShotgun = { strength: 3.0, cooldown: 1.0, burst: 1, clip: 8, graphic: "assets/images/shotgun.png" };
+    public static var weaponTypeSemiauto = { strength: 1.0, cooldown: 1.0, burst: 3, clip: 30, graphic: "assets/images/semiauto.png" };
+    public static var weaponTypeMachinegun = { strength: 0.5, cooldown: 1.0, burst: 30, clip: 30, graphic: "assets/images/machinegun.png" };
+    public static var weaponTypeAutoShotgun = { strength: 3.0, cooldown: 1.0, burst: 4, clip: 12, graphic: "assets/images/autoshotgun.png" };
 
     public static var weapon : Dynamic;
     public static var weaponTimers : Dynamic;
@@ -79,7 +79,7 @@ class G
         FlxG.state.add(G.player);
 
         // Add HUD
-        hudWeapon = new FlxSprite();
+        hudWeapon = new FlxSprite(120, 30);
         hudAmmo = new FlxBar(10, 30, FlxBar.FILL_LEFT_TO_RIGHT, 100, 30, weaponTimers, "ammo", 0, weapon.clip, true);
         hudAmmo.createGradientBar([0xff000000,0xff000000], [0xffff0000,0xffff0000], 1, 180, true);
 
@@ -102,6 +102,9 @@ class G
         hud.add(hudTimer);
         hud.add(hudKills);
         FlxG.state.add(G.hud);
+
+        updateHud();
+        updateHudWeapon();
     }
 
     public static function update()
@@ -159,6 +162,13 @@ class G
     {
         G.hudKills.text = Std.string(score.kills);
         G.hudTimer.text = Std.string(FlxU.formatMoney(score.time, true));
+    }
+
+    public static function updateHudWeapon()
+    {
+        hudAmmo.setRange(0, weapon.clip);
+
+        hudWeapon.loadGraphic(weapon.graphic);
     }
 
     public static function getInput()
@@ -226,8 +236,9 @@ class G
                         G.weaponTimers.ammo = w.weapon.clip;
                         G.weaponTimers.cooldown = w.weapon.cooldown;
                         G.weapon = w.weapon;
-                        hudAmmo.setRange(0, w.weapon.clip);
                         powerup.kill();
+
+                        updateHudWeapon();
                 }
             }
         );

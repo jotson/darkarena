@@ -83,7 +83,7 @@ class Player extends FlxSprite
 
     public function getLantern()
     {
-        lanternTimer = 5;
+        lanternTimer = 8;
         lanternArea = 16;
     }
 

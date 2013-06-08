@@ -7,6 +7,7 @@ class Player extends FlxSprite
 {
     public static var ACCELERATION = 300;
     public static var DRAG = 300;
+    public static var MAXHEALTH = 3;
 
     private var darkness : FlxSprite;
 
@@ -17,8 +18,10 @@ class Player extends FlxSprite
         makeGraphic(15, 15, 0xffff0000);
         centerOffsets();
 
-        this.drag.x = Player.DRAG;
-        this.drag.y = Player.DRAG;
+        drag.x = Player.DRAG;
+        drag.y = Player.DRAG;
+
+        health = MAXHEALTH;
 
         darkness = new FlxSprite(x, y);
         darkness.loadGraphic("assets/images/darkness-mask.png");
@@ -64,6 +67,15 @@ class Player extends FlxSprite
         {
             y = 0;
             velocity.y = -velocity.y;
+        }
+    }
+
+    public override function hurt(Damage : Float)
+    {
+        health -= Damage;
+        if (health <= 0)
+        {
+            G.gameOver();
         }
     }
 }

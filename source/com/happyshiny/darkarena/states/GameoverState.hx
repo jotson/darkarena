@@ -8,6 +8,7 @@ import nme.ui.Mouse;
 import nme.events.KeyboardEvent;
 import org.flixel.FlxButton;
 import org.flixel.FlxG;
+import org.flixel.FlxGroup;
 import org.flixel.FlxPath;
 import org.flixel.FlxSave;
 import org.flixel.FlxSprite;
@@ -18,7 +19,7 @@ import org.flixel.FlxU;
 import com.happyshiny.util.SoundManager;
 import org.flixel.tweens.FlxTween;
 
-class MenuState extends FlxState
+class GameoverState extends FlxState
 {
     public override function create():Void
     {
@@ -48,16 +49,12 @@ class MenuState extends FlxState
         mask.play('default');
         add(mask);
 
-        var t = new FlxText(0, FlxG.height * 0.7, FlxG.width, "Press any key to start");
+        var t = new FlxText(0, FlxG.height * 0.7, FlxG.width, "Press any key to continue");
         t.setFormat(G.FONT, 30, 0xffffffff, "center");
         FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
         add(t);
 
-        var t = new FlxText(0, FlxG.height * 0.4, FlxG.width, "WASD to move, mouse to aim/shoot, survive as long as possible.");
-        t.setFormat(G.FONT, 25, 0xffffffff, "center");
-        add(t);
-
-        var t = new FlxText(0, FlxG.height * 0.2, FlxG.width, "Dark Arena");
+        var t = new FlxText(0, FlxG.height * 0.2, FlxG.width, "Game Over");
         t.setFormat(G.FONT, 60, 0xffffffff, "center");
         add(t);
 
@@ -67,7 +64,7 @@ class MenuState extends FlxState
     public function onKeyUp(e : KeyboardEvent):Void
     {
         // Any key
-        FlxG.switchState(new GameState());
+        FlxG.switchState(new MenuState());
     }
 
     public override function destroy():Void
@@ -83,7 +80,7 @@ class MenuState extends FlxState
 
         if (FlxG.mouse.justPressed())
         {
-            FlxG.switchState(new GameState());
+            FlxG.switchState(new MenuState());
         }
     }   
 }

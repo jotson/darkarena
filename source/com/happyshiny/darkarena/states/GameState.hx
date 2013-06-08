@@ -2,6 +2,7 @@ package com.happyshiny.darkarena.states;
 
 import com.happyshiny.darkarena.entities.Bullet;
 import com.happyshiny.darkarena.entities.Player;
+import com.happyshiny.darkarena.entities.Zombie;
 import nme.Assets;
 import nme.geom.Rectangle;
 import nme.net.SharedObject;
@@ -29,15 +30,17 @@ class GameState extends FlxState
 
         FlxG.camera.antialiasing = true;
 
+        G.reset();
+
         #if (web || desktop)
         FlxG.mouse.show();
         #end
 
         add(new FlxSprite(0, 0, "assets/images/floor.png"));
 
-        var t = new FlxText(0, 50, FlxG.width, "GameState");
-        t.setFormat(G.FONT, 30, 0xffffffff, "center");
-        add(t);
+        // var t = new FlxText(0, 50, FlxG.width, "GameState");
+        // t.setFormat(G.FONT, 30, 0xffffffff, "center");
+        // add(t);
 
         G.enemies = new FlxGroup();
         G.bullets = new FlxGroup();
@@ -47,7 +50,7 @@ class GameState extends FlxState
         add(G.bullets);
         add(G.particles);
 
-        // Add player last
+        // Add player
         G.player = new Player(FlxG.width/2, FlxG.height/2);
         add(G.player);
 
@@ -80,23 +83,6 @@ class GameState extends FlxState
     {
         super.update();
 
-        G.player.acceleration.y = 0;
-        G.player.acceleration.x = 0;
-        if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
-        if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
-        if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
-        if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
-
-        if (FlxG.mouse.justPressed())
-        {
-            FlxG.camera.shake(0.005, 0.08);
-
-            var p = FlxG.mouse.getScreenPosition();
-            var bullet = cast(G.bullets.recycle(Bullet), Bullet);
-            bullet.revive();
-            bullet.x = G.player.x + G.player.width/2;
-            bullet.y = G.player.y + G.player.height/2;
-            bullet.fireAt(p);
-        }
+        G.update();
     }   
 }

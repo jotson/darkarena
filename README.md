@@ -2,6 +2,8 @@
 
 A game created in 48 hours for BaconGameJam.org around the theme "Lights Out" the weekend of June 7th, 2013.
 
+- [Click here to play](http://flagrantdisregard.com/darkarena)
+
 # How to play
 
 - "W" to move forward

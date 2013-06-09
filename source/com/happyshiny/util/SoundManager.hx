@@ -7,7 +7,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxSound;
 
 class SoundManager {
-    public static var varmap : Hash<Array<String>>;
+    public static var varmap : Hash<Array<String>> = null;
 
     /**
      * This method creats a map of keys to embedded sound IDs for the purpose
@@ -58,6 +58,7 @@ class SoundManager {
             embeddedSound = m[Std.random(m.length)];
         }
 
+        FlxG.log(embeddedSound);
         FlxG.play(embeddedSound, volume, loop);
     }
 

@@ -36,14 +36,7 @@ class Main extends Sprite
         
         initialize();
 
-        // Frame rate display
-        // var fps = new FPS(0, 0, 0xff0000);
-        // Lib.current.stage.addChild(fps);
-
-        // FlxG.debug = true;
-        // FlxG.log("Game starting");
-        // FlxG._game._debugger.visible = true;
-        // FlxG._game._debuggerUp = true;
+        addChild(new Game());
     }
 
     private function initialize():Void 
@@ -51,10 +44,41 @@ class Main extends Sprite
         Lib.current.stage.align = StageAlign.TOP_LEFT;
         Lib.current.stage.scaleMode = StageScaleMode.SHOW_ALL;
 
-        addChild(new Game());
-
         // Load sounds
-        // SoundManager.add("explosion", "explosion");
+        SoundManager.add("ricochet", "ricochet1");
+        SoundManager.add("ricochet", "ricochet2");
+        SoundManager.add("ricochet", "ricochet3");
+        SoundManager.add("ricochet", "ricochet4");
+        SoundManager.add("playerhurt", "playerhurt1");
+        SoundManager.add("playerhurt", "playerhurt2");
+        SoundManager.add("playerhurt", "playerhurt3");
+        SoundManager.add("moan", "moan1");
+        SoundManager.add("moan", "moan2");
+        SoundManager.add("moan", "moan3");
+        SoundManager.add("moan", "moan4");
+        SoundManager.add("moan", "moan5");
+        SoundManager.add("moan", "moan6");
+        SoundManager.add("moan", "moan7");
+        SoundManager.add("moan", "moan8");
+        SoundManager.add("footsteps", "footsteps1");
+        SoundManager.add("footsteps", "footsteps2");
+        SoundManager.add("footsteps", "footsteps3");
+        SoundManager.add("footsteps", "footsteps4");
+        SoundManager.add("footsteps", "footsteps5");
+        SoundManager.add("footsteps", "footsteps6");
+        SoundManager.add("footsteps", "footsteps7");
+        SoundManager.add("footsteps", "footsteps8");
+        SoundManager.add("hit", "hit1");
+        SoundManager.add("hit", "hit2");
+        SoundManager.add("hit", "hit3");
+        SoundManager.add("hit", "hit4");
+        SoundManager.add("gunpickup", "gunpickup1");
+        SoundManager.add("gunclick", "gunclick1");
+        SoundManager.add("gunreload", "gunreload1");
+        SoundManager.add("gunoutofammo", "gunoutofammo1");
+        SoundManager.add("autoshotgun", "autoshotgun");
+        SoundManager.add("matchstrike", "matchstrike");
+        SoundManager.add("heartbeat", "heartbeat");
     }
 
     public static function main()

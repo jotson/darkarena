@@ -1,5 +1,6 @@
 package com.happyshiny.darkarena.entities;
 
+import com.happyshiny.util.SoundManager;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
@@ -8,8 +9,8 @@ import org.flixel.FlxU;
 class Player extends FlxSprite
 {
     public static var ACCELERATION = 300;
-    public static var DRAG = 500;
-    public static var MAXHEALTH = 3;
+    public static var DRAG = 1000;
+    public static var MAX_HEALTH = 3;
 
     public var lanternTimer : Float = 0;
     public var lanternArea : Float;
@@ -32,10 +33,20 @@ class Player extends FlxSprite
         addAnimation("running", [0,1,0,2], 10, true);
         play("default");
 
+        this.addAnimationCallback(
+            function(name, frame, index)
+            {
+                if (index == 1 || index == 3)
+                {
+                    SoundManager.play("footsteps");
+                }
+            }
+        );
+
         drag.x = Player.DRAG;
         drag.y = Player.DRAG;
 
-        health = MAXHEALTH;
+        health = MAX_HEALTH;
 
         muzzlePosition = new FlxPoint(0,0);
 
@@ -115,6 +126,8 @@ class Player extends FlxSprite
         FlxG.camera.shake(0.01, 0.2);
 
         flicker(0.5);
+
+        SoundManager.play("playerhurt");
 
         // Push back
         var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), p) - 90);

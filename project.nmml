@@ -18,31 +18,50 @@
     <assets path="assets/fonts" />
 
     <!-- See http://www.nme.io/developer/tutorials/playing-sound/ -->
-    <assets path="assets/sounds" if="flash">
+    <assets path="assets/sounds">
         <!-- mp3s -->
-        <!-- <sound path="explision.mp3" id="explosion" /> -->
-    </assets>
-
-    <assets path="assets/sounds" if="android">
-        <!-- oggs -->
-        <!-- <sound path="explision.ogg" id="explosion" /> -->
+        <sound path="ricochet1.mp3" id="ricochet1" />
+        <sound path="ricochet2.mp3" id="ricochet2" />
+        <sound path="ricochet3.mp3" id="ricochet3" />
+        <sound path="ricochet4.mp3" id="ricochet4" />
+        <sound path="playerhurt1.mp3" id="playerhurt1" />
+        <sound path="playerhurt2.mp3" id="playerhurt2" />
+        <sound path="playerhurt3.mp3" id="playerhurt3" />
+        <sound path="moan1.mp3" id="moan1" />
+        <sound path="moan2.mp3" id="moan2" />
+        <sound path="moan3.mp3" id="moan3" />
+        <sound path="moan4.mp3" id="moan4" />
+        <sound path="moan5.mp3" id="moan5" />
+        <sound path="moan6.mp3" id="moan6" />
+        <sound path="moan7.mp3" id="moan7" />
+        <sound path="moan8.mp3" id="moan8" />
+        <sound path="footsteps1.mp3" id="footsteps1" />
+        <sound path="footsteps2.mp3" id="footsteps2" />
+        <sound path="footsteps3.mp3" id="footsteps3" />
+        <sound path="footsteps4.mp3" id="footsteps4" />
+        <sound path="footsteps5.mp3" id="footsteps5" />
+        <sound path="footsteps6.mp3" id="footsteps6" />
+        <sound path="footsteps7.mp3" id="footsteps7" />
+        <sound path="footsteps8.mp3" id="footsteps8" />
+        <sound path="hit1.mp3" id="hit1" />
+        <sound path="hit2.mp3" id="hit2" />
+        <sound path="hit3.mp3" id="hit3" />
+        <sound path="hit4.mp3" id="hit4" />
+        <sound path="gunpickup1.mp3" id="gunpickup1" />
+        <sound path="gunclick1.mp3" id="gunclick1" />
+        <sound path="gunreload1.mp3" id="gunreload1" />
+        <sound path="gunoutofammo1.mp3" id="gunoutofammo1" />
+        <sound path="pistol.mp3" id="pistol" />
+        <sound path="shotgun.mp3" id="shotgun" />
+        <sound path="semiauto.mp3" id="semiauto" />
+        <sound path="machinegun.mp3" id="machinegun" />
+        <sound path="autoshotgun.mp3" id="autoshotgun" />
+        <sound path="matchstrike.mp3" id="matchstrike" />
+        <sound path="heartbeat.mp3" id="heartbeat" />
     </assets>
 
     <assets path="assets/music">
         <!-- mp3s -->
         <!-- <music path="intro.mp3" id="intro" /> -->
     </assets>
-
-    <!--
-    Override AndroidManifest.xml
-    <template path="to/your/manifest.xml" rename="bin/AndroidManifest.xml" />
-    -->
-
-    <section if="release">
-        <set name="FLX_NO_DEBUG" />
-        <!--<certificate path="KEYSTORE"
-            alias="ALIAS"
-            password="PASSWORD"
-            if="android" />-->
-    </section>
 </project>

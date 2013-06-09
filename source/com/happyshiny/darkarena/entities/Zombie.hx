@@ -1,5 +1,6 @@
 package com.happyshiny.darkarena.entities;
 
+import com.happyshiny.util.SoundManager;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxU;
@@ -42,6 +43,8 @@ class Zombie extends org.flixel.FlxSprite
     {
         play("stunned");
 
+        SoundManager.play("hit");
+
         flicker(1);
         velocity.x = 0;
         velocity.y = 0;
@@ -64,6 +67,8 @@ class Zombie extends org.flixel.FlxSprite
     public override function revive()
     {
         super.revive();
+
+        SoundManager.play("moan");
 
         // Create a random zombie type
         if (Std.random(5) == 0 && G.score.time > 20)

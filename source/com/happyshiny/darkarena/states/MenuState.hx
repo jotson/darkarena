@@ -85,6 +85,7 @@ class MenuState extends FlxState
         add(t);
 
         // SoundManager.playMusic("music");
+        SoundManager.play("gunpickup");
     }
     
     public function onKeyUp(e : KeyboardEvent):Void

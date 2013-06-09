@@ -15,6 +15,8 @@ import org.flixel.FlxSprite;
 import org.flixel.FlxText;
 import org.flixel.FlxU;
 import org.flixel.plugin.photonstorm.FlxBar;
+import org.flixel.tweens.FlxTween;
+import org.flixel.tweens.util.Ease;
 
 class G
 {
@@ -34,23 +36,26 @@ class G
     public static var hudTimer : FlxText;
     public static var hudAmmo : FlxBar;
     public static var hudKills : FlxText;
+    public static var hudHealth : FlxSprite;
 
     public static var score = { kills: 0, time: 0.0, shotsHit: 0, shotsFired: 0 };
 
     public static var zombieTimer : Float = 0;
     public static var zombieSpawnTime : Float = 5;
 
-    public static var weaponTypePistol = { strength: 1.0, cooldown: 0.5, burst: 1, clip: 30, graphic: "assets/images/pistol.png" };
-    public static var weaponTypeShotgun = { strength: 3.0, cooldown: 1.0, burst: 1, clip: 8, graphic: "assets/images/shotgun.png" };
-    public static var weaponTypeSemiauto = { strength: 1.0, cooldown: 1.0, burst: 3, clip: 30, graphic: "assets/images/semiauto.png" };
-    public static var weaponTypeMachinegun = { strength: 0.5, cooldown: 1.0, burst: 30, clip: 30, graphic: "assets/images/machinegun.png" };
-    public static var weaponTypeAutoShotgun = { strength: 3.0, cooldown: 1.0, burst: 4, clip: 12, graphic: "assets/images/autoshotgun.png" };
+    public static var weaponTypePistol = { strength: 1.0, cooldown: 0.5, burst: 1, clip: 30, graphic: "assets/images/pistol.png", sound: "pistol" };
+    public static var weaponTypeShotgun = { strength: 3.0, cooldown: 1.0, burst: 1, clip: 8, graphic: "assets/images/shotgun.png", sound: "shotgun" };
+    public static var weaponTypeSemiauto = { strength: 1.0, cooldown: 1.0, burst: 3, clip: 30, graphic: "assets/images/semiauto.png", sound: "semiauto" };
+    public static var weaponTypeMachinegun = { strength: 0.5, cooldown: 1.0, burst: 30, clip: 30, graphic: "assets/images/machinegun.png", sound: "machinegun" };
+    public static var weaponTypeAutoShotgun = { strength: 3.0, cooldown: 1.0, burst: 4, clip: 12, graphic: "assets/images/autoshotgun.png", sound: "autoshotgun" };
 
     public static var weapon : Dynamic;
     public static var weaponTimers : Dynamic;
     public static var powerupTimers : Dynamic;
 
     public static var muzzleFlash : FlxSprite;
+
+    public static var heartbeatTimer : Float = 0;
 
     public static function reset()
     {
@@ -91,6 +96,12 @@ class G
         hudAmmo = new FlxBar(10, 30, FlxBar.FILL_LEFT_TO_RIGHT, 100, 30, weaponTimers, "ammo", 0, weapon.clip, true);
         hudAmmo.createGradientBar([0xff000000,0xff000000], [0xffff0000,0xffff0000], 1, 180, true);
 
+        // Health
+        hudHealth = new FlxSprite(356, 30);
+        hudHealth.loadGraphic("assets/images/hearts.png", true, false, 16, 16);
+        hudHealth.frame = 0;
+        hud.add(hudHealth);
+
         // Timer
         var t = new FlxText(FlxG.width - 110, 10, 100, "Time");
         t.setFormat("assets/fonts/ShareTech-Regular.ttf", 20, 0xffffffff, "right", 0x000000, true);
@@ -126,6 +137,17 @@ class G
         muzzleFlash.y = G.player.muzzlePosition.y - muzzleFlash.height/2;
         muzzleFlash.angle = G.player.angle;
         muzzleFlash.visible = false;
+
+        heartbeatTimer -= FlxG.elapsed;
+        if (heartbeatTimer <= 0)
+        {
+            SoundManager.play("heartbeat");
+            heartbeatTimer = G.player.health/2;
+            hudHealth.frame = Std.int(3 - G.player.health);
+            hudHealth.scale.x = 1.0;
+            hudHealth.scale.y = 1.0;
+            FlxG.tween(hudHealth.scale, { x: 2, y: 2 }, heartbeatTimer/2, { ease: Ease.bounceOut });
+        }
 
         updateHud();
 
@@ -217,31 +239,46 @@ class G
             }
         }
 
-        if (FlxG.mouse.pressed() && weaponTimers.cooldown <= 0 && weaponTimers.nextShot <= 0 && weaponTimers.ammo > 0)
+        if (FlxG.mouse.pressed() && weaponTimers.cooldown <= 0 && weaponTimers.nextShot <= 0)
         {
-            if (weaponTimers.nextShot <= -0.2) weaponTimers.burst = 0;
-
-            weaponTimers.nextShot = 0.1;
-
-            weaponTimers.burst += 1;
-            if (weaponTimers.burst >= weapon.burst)
+            if (weaponTimers.ammo > 0)
             {
-                weaponTimers.cooldown = weapon.cooldown;
-                weaponTimers.burst = 0;
+                if (weaponTimers.nextShot <= -0.2) weaponTimers.burst = 0;
+
+                weaponTimers.nextShot = 0.1;
+
+                weaponTimers.burst += 1;
+                if (weaponTimers.burst >= weapon.burst)
+                {
+                    // SoundManager.play("gunreload");
+                    weaponTimers.cooldown = weapon.cooldown;
+                    weaponTimers.burst = 0;
+                }
+
+                FlxG.camera.shake(0.005, 0.08);
+                SoundManager.play(weapon.sound);
+
+                var p = FlxG.mouse.getScreenPosition();
+                var bullet = cast(G.bullets.recycle(Bullet), Bullet);
+                bullet.revive();
+                bullet.strength = weapon.strength;
+                bullet.fireAt(p);
+
+                muzzleFlash.visible = true;
+
+                score.shotsFired++;
+                weaponTimers.ammo -= 1;
+
+                if (weaponTimers.ammo == 0)
+                {
+                    SoundManager.play("gunoutofammo");
+                }
             }
-
-            FlxG.camera.shake(0.005, 0.08);
-
-            var p = FlxG.mouse.getScreenPosition();
-            var bullet = cast(G.bullets.recycle(Bullet), Bullet);
-            bullet.revive();
-            bullet.strength = weapon.strength;
-            bullet.fireAt(p);
-
-            muzzleFlash.visible = true;
-
-            score.shotsFired++;
-            weaponTimers.ammo -= 1;
+            
+            if (FlxG.mouse.justPressed() && weaponTimers.ammo <= 0)
+            {
+                SoundManager.play("gunclick");
+            }
         }
     }
 
@@ -253,6 +290,7 @@ class G
                 var zombie : Zombie = cast(zombie, Zombie);
                 if (!zombie.flickering)
                 {
+                    hudHealth.frame = Std.int(3 - G.player.health);
                     G.player.hit(zombie.strength, zombie.getMidpoint());
                     zombie.hit(0, player.getMidpoint());
                 }
@@ -270,10 +308,12 @@ class G
                 switch(FlxU.getClassName(powerup, true))
                 {
                     case "Lantern":
+                        SoundManager.play("matchstrike");
                         G.player.getLantern();
                         powerup.kill();
 
                     case "Weapon":
+                        SoundManager.play("gunpickup");
                         var w = cast(powerup, Weapon);
                         G.weaponTimers.ammo = w.weapon.clip;
                         G.weaponTimers.cooldown = w.weapon.cooldown;

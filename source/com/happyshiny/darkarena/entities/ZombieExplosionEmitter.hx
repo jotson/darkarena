@@ -10,7 +10,7 @@ class ZombieExplosionEmitter extends org.flixel.addons.FlxEmitterExt
 
     public function new()
     {
-        super(0, 0, 10);
+        super(0, 0, 3);
 
         particleClass = ZombieExplosionParticle;
         setMotion(0, 0, LIFESPAN);
@@ -28,7 +28,7 @@ class ZombieExplosionEmitter extends org.flixel.addons.FlxEmitterExt
 
     public function go()
     {
-        start(false, LIFESPAN, 0, 1);
+        start(true, LIFESPAN);
         for(i in 1...6)
         {
             var t : FlxSprite = cast(G.bodies.recycle(FlxSprite), FlxSprite);
@@ -74,6 +74,7 @@ class ZombieExplosionParticle extends FlxParticle
         super.revive();
 
         visible = true;
+        angle = Std.random(360);
         play("default", true);
     }
 }

@@ -1,5 +1,6 @@
 package com.happyshiny.darkarena.entities;
 
+import com.happyshiny.util.SoundManager;
 import org.flixel.FlxG;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
@@ -24,7 +25,11 @@ class Bullet extends FlxSprite
         super.update();
 
         // Kill at boundary
-        if (!this.onScreen()) kill();
+        if (!this.onScreen())
+        {
+            SoundManager.play("ricochet");
+            kill();
+        }
     }
 
     public override function revive()

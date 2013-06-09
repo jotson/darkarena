@@ -79,6 +79,8 @@ class Main extends Sprite
         SoundManager.add("autoshotgun", "autoshotgun");
         SoundManager.add("matchstrike", "matchstrike");
         SoundManager.add("heartbeat", "heartbeat");
+        SoundManager.add("deathscream", "deathscream");
+        SoundManager.add("zombiedeath", "zombiedeath");
     }
 
     public static function main()

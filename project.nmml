@@ -58,6 +58,8 @@
         <sound path="autoshotgun.mp3" id="autoshotgun" />
         <sound path="matchstrike.mp3" id="matchstrike" />
         <sound path="heartbeat.mp3" id="heartbeat" />
+        <sound path="deathscream.mp3" id="deathscream" />
+        <sound path="zombiedeath.mp3" id="zombiedeath" />
     </assets>
 
     <assets path="assets/music">

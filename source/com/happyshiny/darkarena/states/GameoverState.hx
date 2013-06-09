@@ -82,6 +82,7 @@ class GameoverState extends FlxState
         add(t);
 
         // SoundManager.playMusic("music");
+        SoundManager.play("deathscream");
     }
     
     public function onKeyUp(e : KeyboardEvent):Void

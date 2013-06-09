@@ -14,6 +14,8 @@ class Zombie extends org.flixel.FlxSprite
     {
         super(x,y);
 
+        loadGraphic("assets/images/zombie1.png", true, false, 50, 50);
+
         revive();
     }
 
@@ -54,13 +56,28 @@ class Zombie extends org.flixel.FlxSprite
         super.revive();
 
         // Create a random zombie type
-        loadGraphic("assets/images/zombie1.png", true, false, 50, 50);
+
+        if (Std.random(5) == 0 && G.score.time > 20)
+        {
+            // Giant zombie
+            color = 0xff660000;
+            health = 10;
+            scale.x = 3;
+            scale.y = 3;
+        }
+        else
+        {
+            // Normal zombie
+            color = 0xffffffff;
+            health = 3.0;
+            scale.x = 1;
+            scale.y = 1;
+        }
+        centerOffsets();
+
         addAnimation("default", [0,1,2,1], 5, true);
         addAnimation("stunned", [3,4,5,4], 10, true);
         play("default");
-
-        health = 3.0;
-        centerOffsets();
 
         // Random starting position
         switch(Std.random(4))

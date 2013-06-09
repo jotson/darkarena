@@ -132,7 +132,7 @@ class G
         {
             zombieTimer = zombieSpawnTime;
             zombieSpawnTime -= 0.1;
-            if (zombieSpawnTime < 0.5) zombieSpawnTime = 0.5;
+            if (zombieSpawnTime < 2) zombieSpawnTime = 2;
 
             var z = cast(G.zombies.recycle(Zombie), Zombie);
             z.revive();

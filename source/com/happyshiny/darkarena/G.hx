@@ -3,6 +3,7 @@ package com.happyshiny.darkarena;
 import com.happyshiny.darkarena.entities.Lantern;
 import com.happyshiny.darkarena.entities.Player;
 import com.happyshiny.darkarena.entities.Powerup;
+import com.happyshiny.darkarena.entities.PowerupEmitter;
 import com.happyshiny.darkarena.entities.Weapon;
 import com.happyshiny.darkarena.entities.Zombie;
 import com.happyshiny.darkarena.entities.Bullet;
@@ -261,6 +262,11 @@ class G
         FlxG.overlap(player, powerups,
             function(player, powerup)
             {
+                var e = cast(G.particles.recycle(PowerupEmitter), PowerupEmitter);
+                e.x = powerup.x + powerup.width/2;
+                e.y = powerup.y + powerup.height/2;
+                e.go();
+
                 switch(FlxU.getClassName(powerup, true))
                 {
                     case "Lantern":

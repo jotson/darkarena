@@ -56,8 +56,8 @@ class Zombie extends org.flixel.FlxSprite
         G.addKill();
 
         var e = cast(G.particles.recycle(ZombieExplosionEmitter), ZombieExplosionEmitter);
-        e.x = x;
-        e.y = y;
+        e.x = x + width/2 - e.width/2;
+        e.y = y + height/2 - e.height/2;
         e.go();
     }
 

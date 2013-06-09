@@ -21,9 +21,13 @@ import org.flixel.tweens.FlxTween;
 
 class GameoverState extends FlxState
 {
+    private var timer : Float = 3;
+
     public override function create():Void
     {
         var grid = FlxG.height/16;
+
+        Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
         // Keyboard events
         FlxG.tween(this, {}, 3,
@@ -31,8 +35,6 @@ class GameoverState extends FlxState
             complete:
                 function()
                 {
-                    Lib.current.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-
                     var t = new FlxText(0, grid * 10, FlxG.width, "Press any key to continue");
                     t.setFormat(G.FONT, 30, 0xff990000, "center", 0x000000, true);
                     FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
@@ -84,6 +86,8 @@ class GameoverState extends FlxState
     
     public function onKeyUp(e : KeyboardEvent):Void
     {
+        if (timer > 0) return;
+
         // Any key
         FlxG.switchState(new MenuState());
     }
@@ -98,6 +102,10 @@ class GameoverState extends FlxState
     public override function update():Void
     {
         super.update();
+
+        timer -= FlxG.elapsed;
+
+        if (timer > 0) return;
 
         if (FlxG.mouse.justPressed())
         {

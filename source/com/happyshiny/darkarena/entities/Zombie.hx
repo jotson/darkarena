@@ -47,8 +47,18 @@ class Zombie extends org.flixel.FlxSprite
         velocity.y = 0;
 
         super.hurt(Damage);
+    }
 
-        if (!alive) G.addKill();
+    public override function kill()
+    {
+        super.kill();
+
+        G.addKill();
+
+        var e = cast(G.particles.recycle(ZombieExplosionEmitter), ZombieExplosionEmitter);
+        e.x = x;
+        e.y = y;
+        e.go();
     }
 
     public override function revive()
@@ -56,7 +66,6 @@ class Zombie extends org.flixel.FlxSprite
         super.revive();
 
         // Create a random zombie type
-
         if (Std.random(5) == 0 && G.score.time > 20)
         {
             // Giant zombie

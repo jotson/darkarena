@@ -21,17 +21,25 @@ class Zombie extends org.flixel.FlxSprite
     {
         super.update();
 
-        if (flickering) return;
+        if (flickering)
+        {
+            return;
+        }
 
-        // Find player
-        var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), G.player.getMidpoint()) - 90);
+        play("default");
 
-        velocity.x = SPEED * Math.cos(angle);
-        velocity.y = SPEED * Math.sin(angle);        
+        // Find playersss
+        angle = FlxU.getAngle(getMidpoint(), G.player.getMidpoint());
+        var radians = FlxU.degreesToRadians(angle - 90);
+
+        velocity.x = SPEED * Math.cos(radians);
+        velocity.y = SPEED * Math.sin(radians);        
     }
 
     public function hit(Damage : Float, p : FlxPoint)
     {
+        play("stunned");
+
         flicker(1);
         velocity.x = 0;
         velocity.y = 0;
@@ -46,7 +54,11 @@ class Zombie extends org.flixel.FlxSprite
         super.revive();
 
         // Create a random zombie type
-        makeGraphic(20, 20, 0xff339900);
+        loadGraphic("assets/images/zombie1.png", true, false, 50, 50);
+        addAnimation("default", [0,1,2,1], 5, true);
+        addAnimation("stunned", [3,4,5,4], 10, true);
+        play("default");
+
         health = 3.0;
         centerOffsets();
 

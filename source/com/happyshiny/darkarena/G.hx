@@ -66,7 +66,7 @@ class G
 
         G.powerups = new FlxGroup();
         G.zombies = new FlxGroup();
-        G.bodies = new FlxGroup();
+        G.bodies = new FlxGroup(250);
         G.bullets = new FlxGroup();
         G.particles = new FlxGroup();
         G.hud = new FlxGroup();

@@ -114,7 +114,7 @@ class Player extends FlxSprite
     {
         FlxG.camera.shake(0.01, 0.2);
 
-        flicker(1);
+        flicker(0.5);
 
         // Push back
         var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), p) - 90);

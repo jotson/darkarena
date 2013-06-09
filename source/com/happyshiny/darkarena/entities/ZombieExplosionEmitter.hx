@@ -6,7 +6,7 @@ import org.flixel.FlxSprite;
 
 class ZombieExplosionEmitter extends org.flixel.addons.FlxEmitterExt
 {
-    public static var LIFESPAN = 0.5;
+    public static var LIFESPAN = 0.25;
 
     public function new()
     {

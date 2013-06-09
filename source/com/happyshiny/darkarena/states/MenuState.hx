@@ -74,7 +74,7 @@ class MenuState extends FlxState
         }
         else
         {
-            t = new FlxText(0, grid * 9, FlxG.width, "- W: move forward - S: backward - Mouse: shoot -");
+            t = new FlxText(0, grid * 9, FlxG.width, "- W: forward   S: backward   Mouse: shoot -");
         }
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);

@@ -18,4 +18,4 @@ The game was written in Haxe with the HaxeFlixel library. To build it:
 
 - [Install Haxe+NME](http://www.nme.io/download/)
 - Install HaxeFlixel by running: `haxelib install flixel`
-- The build and run the game with: `nme test flash`
+- Then build and run the game with: `nme test flash`

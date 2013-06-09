@@ -81,7 +81,6 @@ class GameoverState extends FlxState
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
-        // SoundManager.playMusic("music");
         SoundManager.play("deathscream");
     }
     

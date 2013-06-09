@@ -64,6 +64,6 @@
 
     <assets path="assets/music">
         <!-- mp3s -->
-        <!-- <music path="intro.mp3" id="intro" /> -->
+        <sound path="darkarena.mp3" id="darkarena" />
     </assets>
 </project>

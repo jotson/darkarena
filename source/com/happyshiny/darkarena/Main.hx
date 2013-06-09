@@ -81,6 +81,7 @@ class Main extends Sprite
         SoundManager.add("heartbeat", "heartbeat");
         SoundManager.add("deathscream", "deathscream");
         SoundManager.add("zombiedeath", "zombiedeath");
+        SoundManager.add("darkarena", "darkarena");
     }
 
     public static function main()

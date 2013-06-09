@@ -38,7 +38,6 @@ class GameState extends FlxState
         
         G.reset();
 
-        // SoundManager.playMusic("music");
         SoundManager.play("gunpickup");
     }
     

@@ -84,7 +84,7 @@ class MenuState extends FlxState
         FlxG.tween(t, { alpha: 0.2 }, 0.5, { type: FlxTween.PINGPONG });
         add(t);
 
-        // SoundManager.playMusic("music");
+        SoundManager.playMusic("darkarena");
         SoundManager.play("gunpickup");
     }
     

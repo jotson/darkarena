@@ -49,6 +49,8 @@ class G
     public static var weaponTimers : Dynamic;
     public static var powerupTimers : Dynamic;
 
+    public static var muzzleFlash : FlxSprite;
+
     public static function reset()
     {
         score.time = 0;
@@ -60,7 +62,7 @@ class G
 
         weapon = weaponTypePistol;
         weaponTimers = { nextShot: 0.0, cooldown: 0.0, burst: 0, ammo: weapon.clip };
-        powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, weapons: 0, maxLanterns: 2, maxAmmo: 2, maxWeapons: 2, cooldown: 15 };
+        powerupTimers = { timer: 0.0, lanterns: 0, ammo: 0, weapons: 0, maxLanterns: 2, maxAmmo: 2, maxWeapons: 2, cooldown: 10 };
 
         G.powerups = new FlxGroup();
         G.zombies = new FlxGroup();
@@ -74,6 +76,10 @@ class G
         FlxG.state.add(G.zombies);
         FlxG.state.add(G.bullets);
         FlxG.state.add(G.particles);
+
+        muzzleFlash = new FlxSprite(0, 0, "assets/images/muzzle-flash.png");
+        muzzleFlash.visible = false;
+        G.particles.add(muzzleFlash);
 
         // Add player
         G.player = new Player(FlxG.width/2, FlxG.height/2);
@@ -114,6 +120,11 @@ class G
         zombieTimer -= FlxG.elapsed;
         weaponTimers.cooldown -= FlxG.elapsed;
         weaponTimers.nextShot -= FlxG.elapsed;
+
+        muzzleFlash.x = G.player.muzzlePosition.x - muzzleFlash.width/2;
+        muzzleFlash.y = G.player.muzzlePosition.y - muzzleFlash.height/2;
+        muzzleFlash.angle = G.player.angle;
+        muzzleFlash.visible = false;
 
         updateHud();
 
@@ -224,9 +235,9 @@ class G
             var bullet = cast(G.bullets.recycle(Bullet), Bullet);
             bullet.revive();
             bullet.strength = weapon.strength;
-            bullet.x = G.player.x + G.player.width/2;
-            bullet.y = G.player.y + G.player.height/2;
             bullet.fireAt(p);
+
+            muzzleFlash.visible = true;
 
             score.shotsFired++;
             weaponTimers.ammo -= 1;

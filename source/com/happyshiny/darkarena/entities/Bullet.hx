@@ -14,8 +14,9 @@ class Bullet extends FlxSprite
     {
         super(x, y);
 
-        makeGraphic(4, 4, 0xffff0000);
+        loadGraphic("assets/images/bullet.png");
         centerOffsets();
+
     }
 
     public override function update()
@@ -35,9 +36,16 @@ class Bullet extends FlxSprite
 
     public function fireAt(p : FlxPoint)
     {
-        var angle = FlxU.degreesToRadians(FlxU.getAngle(getMidpoint(), p) - 90);
+        // Move bullet to gun muzzle
+        x = G.player.muzzlePosition.x - width/2;
+        y = G.player.muzzlePosition.y - height/2;
 
-        velocity.x = SPEED * Math.cos(angle);
-        velocity.y = SPEED * Math.sin(angle);
+        // Fire bullet in the right direction
+        var degrees = FlxU.getAngle(getMidpoint(), p);
+        var radians = FlxU.degreesToRadians(degrees - 90);
+
+        velocity.x = SPEED * Math.cos(radians);
+        velocity.y = SPEED * Math.sin(radians);
+        angle = degrees;
     }
 }

@@ -16,11 +16,14 @@ class Player extends FlxSprite
 
     private var darkness : FlxSprite;
 
+    public var muzzlePosition : FlxPoint;
+
     public function new(x, y)
     {
         super(x, y);
 
         loadGraphic("assets/images/player.png", true, false, 15, 15);
+
         centerOffsets();
         scale.x = 3;
         scale.y = 3;
@@ -33,6 +36,8 @@ class Player extends FlxSprite
         drag.y = Player.DRAG;
 
         health = MAXHEALTH;
+
+        muzzlePosition = new FlxPoint(0,0);
 
         darkness = new FlxSprite(x, y);
         darkness.loadGraphic("assets/images/darkness-mask.png");
@@ -64,6 +69,8 @@ class Player extends FlxSprite
         {
             play("running");
         }
+
+        muzzlePosition = FlxU.rotatePoint(x + width/2 + 3 * scale.x, y + height/2 + 10 * scale.y, x + width/2, y + width/2, angle);
 
         lanternTimer -= FlxG.elapsed;
         if (lanternTimer <= 0)

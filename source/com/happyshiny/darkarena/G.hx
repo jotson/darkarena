@@ -18,6 +18,7 @@ import org.flixel.plugin.photonstorm.FlxBar;
 class G
 {
     public static var FONT : String = "assets/fonts/ShareTech-Regular.ttf";
+    public static var absoluteMovement : Bool = false;
 
     public static var player : Player;
 
@@ -178,10 +179,31 @@ class G
 
         if (G.player.flickering) return;
 
-        if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
-        if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
-        if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
-        if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
+        if (G.absoluteMovement)
+        {
+            // Absolute movement directions
+            if (FlxG.keys.pressed("W")) G.player.acceleration.y = -Player.ACCELERATION;
+            if (FlxG.keys.pressed("A")) G.player.acceleration.x = -Player.ACCELERATION;
+            if (FlxG.keys.pressed("S")) G.player.acceleration.y = Player.ACCELERATION;
+            if (FlxG.keys.pressed("D")) G.player.acceleration.x = Player.ACCELERATION;
+        }
+        else
+        {
+            // Move based on facing
+            // Strafing ("A" and "D" feel weird)
+            var angle = FlxU.degreesToRadians(FlxU.getAngle(G.player.getMidpoint(), FlxG.mouse.getScreenPosition()) - 90);
+            if (FlxG.keys.pressed("W"))
+            {
+                G.player.acceleration.x = Player.ACCELERATION * Math.cos(angle);
+                G.player.acceleration.y = Player.ACCELERATION * Math.sin(angle);
+            }
+            if (FlxG.keys.pressed("S"))
+            {
+                angle += Math.PI;
+                G.player.acceleration.x = Player.ACCELERATION * Math.cos(angle);
+                G.player.acceleration.y = Player.ACCELERATION * Math.sin(angle);
+            }
+        }
 
         if (FlxG.mouse.pressed() && weaponTimers.cooldown <= 0 && weaponTimers.nextShot <= 0 && weaponTimers.ammo > 0)
         {
@@ -217,8 +239,11 @@ class G
             function(player, zombie)
             {
                 var zombie : Zombie = cast(zombie, Zombie);
-                G.player.hit(zombie.strength, zombie.getMidpoint());
-                zombie.hit(0, player.getMidpoint());
+                if (!zombie.flickering)
+                {
+                    G.player.hit(zombie.strength, zombie.getMidpoint());
+                    zombie.hit(0, player.getMidpoint());
+                }
             }
         );
 

@@ -22,9 +22,6 @@ import org.flixel.tweens.FlxTween;
 
 class MenuState extends FlxState
 {
-    private var flagrantdisregard : FlxText;
-    private var bacongamejam : FlxText;
-
     public override function create():Void
     {
         // Keyboard events
@@ -59,19 +56,26 @@ class MenuState extends FlxState
         t.setFormat(G.FONT, 60, 0xff990000, "center", 0x000000, true);
         add(t);
 
-        flagrantdisregard = new FlxText(0, grid * 4, FlxG.width, "John Watson - flagrantdisregard.com");
-        flagrantdisregard.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
-        add(flagrantdisregard);
-
-        bacongamejam = new FlxText(0, grid * 5, FlxG.width, "Created for BaconGameJam05 - bacongamejam.org");
-        bacongamejam.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
-        add(bacongamejam);
-
-        var t = new FlxText(0, grid * 6, FlxG.width, "Theme: \"Lights Out\"");
+        var t = new FlxText(0, grid * 4, FlxG.width, "John Watson - flagrantdisregard.com");
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
-        var t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move / Mouse to shoot -");
+        var t = new FlxText(0, grid * 6, FlxG.width, "#BaconGameJam - Theme: \"Lights Out\" - bacongamejam.org");
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        var t = new FlxText(0, grid * 7, FlxG.width, "#1GAM - OneGameAMonth.com");
+        t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
+        add(t);
+
+        if (G.absoluteMovement)
+        {
+            t = new FlxText(0, grid * 9, FlxG.width, "- WASD to move / Mouse to shoot -");
+        }
+        else
+        {
+            t = new FlxText(0, grid * 9, FlxG.width, "- W: move forward - S: backward - Mouse: shoot -");
+        }
         t.setFormat(G.FONT, 25, 0xff99cc00, "center", 0x000000, true);
         add(t);
 
@@ -102,17 +106,6 @@ class MenuState extends FlxState
 
         if (FlxG.mouse.justPressed())
         {
-            if (flagrantdisregard.overlapsPoint(FlxG.mouse.getScreenPosition()))
-            {
-                Lib.getURL(new URLRequest("http://flagrantdisregard.com"), "");
-                return;
-            }
-            if (bacongamejam.overlapsPoint(FlxG.mouse.getScreenPosition()))
-            {
-                Lib.getURL(new URLRequest("http://bacongamejam.org"), "");
-                return;
-            }
-
             FlxG.switchState(new GameState());
         }
     }   

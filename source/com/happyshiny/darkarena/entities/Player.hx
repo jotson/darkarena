@@ -8,7 +8,7 @@ import org.flixel.FlxU;
 class Player extends FlxSprite
 {
     public static var ACCELERATION = 300;
-    public static var DRAG = 300;
+    public static var DRAG = 500;
     public static var MAXHEALTH = 3;
 
     public var lanternTimer : Float = 0;
@@ -20,8 +20,14 @@ class Player extends FlxSprite
     {
         super(x, y);
 
-        makeGraphic(15, 15, 0xffff0000);
+        loadGraphic("assets/images/player.png", true, false, 15, 15);
         centerOffsets();
+        scale.x = 3;
+        scale.y = 3;
+
+        addAnimation("default", [0], 1, true);
+        addAnimation("running", [0,1,0,2], 10, true);
+        play("default");
 
         drag.x = Player.DRAG;
         drag.y = Player.DRAG;
@@ -48,6 +54,16 @@ class Player extends FlxSprite
     public override function update()
     {
         super.update();
+
+        angle = FlxU.getAngle(getMidpoint(), FlxG.mouse.getScreenPosition());
+        if (acceleration.x == 0 && acceleration.y == 0)
+        {
+            play("default");
+        }
+        else
+        {
+            play("running");
+        }
 
         lanternTimer -= FlxG.elapsed;
         if (lanternTimer <= 0)

@@ -11,3 +11,11 @@ A game created in 48 hours for BaconGameJam.org around the theme "Lights Out" th
 - "W" to move forward
 - "S" to move backward
 - Mouse to aim and shoot
+
+# Building
+
+The game was written in Haxe with the HaxeFlixel library. To build it:
+
+- [Install Haxe+NME](http://www.nme.io/download/)
+- Install HaxeFlixel by running: haxelib install flixel
+- The build and run the game with: nme test flash

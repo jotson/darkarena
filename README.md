@@ -1,6 +1,13 @@
 # Dark Arena by John Watson
 
-A game created in 48 hours for BaconGameJam.org around the theme "Lights Out" the weekend of June 7th, 2013.
+This game was created in 48 hours for BaconGameJam.org around the theme "Lights Out" the weekend of June 7th, 2013.
+
+It's dark and you are alone against a horde of VERY ANGRY things. Explore to find five different weapon types including the mighty auto-shotgun. Find candles to temporarily light up the darkness. Survive as long as you can.
+
+- There are five different weapon types
+- Conserve your ammo and switch weapons carefully
+- Find candles to increase visibility
+- Difficulty increases over time
 
 - [Click here to play](http://flagrantdisregard.com/bacongamejam05)
 

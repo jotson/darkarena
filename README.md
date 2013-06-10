@@ -9,7 +9,7 @@ It's dark and you are alone against a horde of VERY ANGRY things. Explore to fin
 - Find candles to increase visibility
 - Difficulty increases over time
 
-[Click here to play](http://flagrantdisregard.com/bacongamejam05)
+[Click here to play](http://flagrantdisregard.com/bacongamejam05)<br>
 [Watch gameplay video](http://www.youtube.com/watch?v=nIxyJOm3tiM)
 
 # How to play
